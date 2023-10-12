@@ -108,6 +108,24 @@ instacart |>
 ```
 
 
+# Problem 2 
+
+## 1. Load Data
+
+```{r}
+library(p8105.datasets)
+data("brfss_smart2010")
+```
+
+## 2. Data Cleaning 
+
+```{r}
+brfss_smart2010 = brfss_smart2010 |>
+  janitor::clean_names()|>
+  rename(location_abbr = locationabbr, location_desc = locationdesc) |>
+  filter(topic == "Overall Health")
+```
+
 
 
 
