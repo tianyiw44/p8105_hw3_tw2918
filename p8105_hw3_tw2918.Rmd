@@ -133,13 +133,24 @@ data("brfss_smart2010")
 ```{r}
 brfss_df = brfss_smart2010 |>
   janitor::clean_names()|>
-  rename(location_abbr = locationabbr, location_desc = locationdesc) |>
+  rename(state = locationabbr, state_county = locationdesc) |>
   filter(topic == "Overall Health") |>
   mutate(response = factor(response, levels = c("Poor", "Fair", "Good", "Very good", "Excellent"))) |>
   arrange(response)
 ```
 
+## 3. Answer Questions
 
+In 2002, which states were observed at 7 or more locations? What about in 2010?
 
+```{r}
+brfss_df |>
+  filter(year == 2002 | year == 2010) |>
+  group_by(year, state)|>
+  summarize(location = n_distinct(state_county)) |>
+  filter(location>=7) |>
+  arrange(year, location) |>
+  knitr::kable()
+```
 
 
