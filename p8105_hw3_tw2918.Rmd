@@ -120,10 +120,13 @@ data("brfss_smart2010")
 ## 2. Data Cleaning 
 
 ```{r}
-brfss_smart2010 = brfss_smart2010 |>
+brfss_df = brfss_smart2010 |>
   janitor::clean_names()|>
   rename(location_abbr = locationabbr, location_desc = locationdesc) |>
-  filter(topic == "Overall Health")
+  filter(topic == "Overall Health") |>
+  mutate(response = factor(response, levels = c("Poor", "Fair", "Good", "Very good", "Excellent"))) |>
+  arrange(response)
+
 ```
 
 
