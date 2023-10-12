@@ -14,6 +14,16 @@ knitr::opts_chunk$set(
   fig.asp = .6,
   out.width = "90%"
 )
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
 # Problem 1
@@ -30,7 +40,7 @@ data("instacart")
 * The dataset contains cleaned and limited data of the “The Instacart Online Grocery Shopping Dataset 2017”, which records theover 3 million online grocery orders from more than 200,000 Instacart users. 
 *The dataset contains `r nrow(instacart)` observations and `r ncol(instacart)` variables. Each `row`/observation in the dataset is a product from an order.
 * Some variables reflect key identifications of the orders and customers including `order_id` and `order_id`. There is a single order per consumers in this dataset.
-* `eval_set`reflects evaluation set this order belongs in, which is exclusively "`train`" in this dataset. 
+* `eval_set`reflects evaluation set this order belongs in, which is exclusively "`train`" in this dataset.
 * `order_number` reflects the order sequence number for this user. Its value ranges from `r min(instacart$order_number)` to`r max(instacart$order_number)`. The average order_number is `r mean(instacart$order_number)`. 
 * Some variables reflect key information of the products, including `product_id` and `product_name`, which aisle and department the prodcuts are purchased from, including  `aisle_id`,  `aisle`,  `department_id` and  `department`, and the order in which each product was added to cart `add_to_cart_order` , from `r min(instacart$add_to_cart_order)` to `r max(instacart$add_to_cart_order)`. 
 * `reordered` variable is a binary indicator off this prodcut has been ordered by this user in the past, 0 otherwise. 
@@ -62,6 +72,7 @@ mode(instacart$aisle)
 instacart |>
   count(aisle)|>
   filter(n > 10000) |>
+  mutate(aisle = fct_reorder(aisle, n)) |> 
   ggplot(aes(x = aisle, y = n )) +
   geom_point() +
   labs(
@@ -104,7 +115,7 @@ instacart |>
     names_from = dow,
     values_from = mean_hour
   ) |>
-  knitr::kable()
+  knitr::kable(digits = 2)
 ```
 
 
@@ -126,7 +137,6 @@ brfss_df = brfss_smart2010 |>
   filter(topic == "Overall Health") |>
   mutate(response = factor(response, levels = c("Poor", "Fair", "Good", "Very good", "Excellent"))) |>
   arrange(response)
-
 ```
 
 
