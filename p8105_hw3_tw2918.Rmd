@@ -217,7 +217,22 @@ nhanes_df =
 ```{r}
 nhanes_df |>
   group_by(education)|>
-  count()
+  count(sex)|>
+  pivot_wider(
+    names_from = "sex",
+    values_from = "n"
+  )|>
+    knitr::kable()
+
+nhanes_df |>
+  ggplot(aes(x = education, y = age, fill = sex)) +
+  geom_boxplot() +
+    labs(
+       title = "Age Distribution for Men and Women in Each Education Category",
+        x = "Education category",
+        y = "Age",
+         color = "Sex"
+    )
 ```
 
 
