@@ -227,6 +227,8 @@ nhanes_df |>
 nhanes_df |>
   ggplot(aes(x = education, y = age, fill = sex)) +
   geom_boxplot() +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=3, color="red",
+             position = position_dodge2(width = 0.75, preserve = "single")) +
     labs(
        title = "Age Distribution for Men and Women in Each Education Category",
         x = "Education category",
@@ -234,6 +236,17 @@ nhanes_df |>
          color = "Sex"
     )
 ```
+
+Comment: 
+
+* For the table, I `count` the number of female and male `group_by` `education`, then `pivot_wider` to make the table reader friendly.
+* For education, most female and male has `More than high school` education. `Less than high school `  education ranked second for female, and third for male. `High school equivalent` education ranked third for female, and second for male. 
+* Male has more `high school equivalent` education level than female; female has more `Less than high school`, and `More than high school` education level than male, but the differences are minor. 
+* For the plot, I used `boxplot` to show age distribution in each `edcuation` category, `colored` for male and female.
+* The plot shows that, the mean and average age for male and female is similar in `Less than high school` education level, which is around 58 for mean, and 60 for median; female has a higher average and median age than male `high school equivalent` education level, average age is around 58 for female, and 50 for male, median age is around 62 for female and 53 for male; the mean and average age for male and female is similar in `More than high school` education level, which is around 45 for average, and 43 for median. 
+* For `Less than high school` and `high school equivalent` education levels, mean is less than median, suggesting left skewed distribution. `More than high school` edcuation level, mean is greater than median, suggesting right skewed distribution. 
+
+
 
 
 
