@@ -4,7 +4,7 @@ output: github_document
 date: "2023-10-07"
 ---
 
-```{r}
+```{r, include=FALSE}
 library(tidyverse)
 library(ggridges)
 library(patchwork)
@@ -57,7 +57,7 @@ mode(instacart$aisle_id)
 mode(instacart$aisle)
 ```
 
-* There are `r max(instacart$aisle_id)`  aisles in the dataset, and aisle `r mode(instacart$aisle_id)`, `r mode(instacart$aisle)`aisles is the most items ordered from. 
+* There are `r max(instacart$aisle_id)`  aisles in the dataset, and aisle `r mode(instacart$aisle_id)`, `r mode(instacart$aisle)` aisles is the most items ordered from. 
 
 
 ### Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
@@ -181,5 +181,37 @@ brfss_df |>
     color = "Location"
     ) 
 ```
+
+# Problem 3
+
+## 1. Load, tidy, merge, and otherwise organize the data sets.
+  Include all originally observed variables
+  Exclude participants less than 21 years of age, and those with missing demographic data; 
+  And encode data with reasonable variable classes (i.e. not numeric, and using factors with the ordering of tables and plots in mind).
+
+```{r}
+nhanes_demo_df = read_csv("./data/nhanes_covar.csv", skip = 4) |>
+  janitor::clean_names()|>
+  mutate(
+    sex = ifelse(sex == 1, "male", "female"),
+    education = recode(education,
+         "1" = "Less than high school", 
+         "2" = "High school equivalent", 
+         "3" = "More than high school"
+         )
+    )|>
+  mutate(education = factor(education, levels = c("Less than high School", "High school equivalent", "More than high school")))
+
+
+nhanes_accel_df = read.csv("./data/nhanes_accel.csv")|>
+  janitor::clean_names()
+
+nhanes_df = 
+  full_join(nhanes_demo_df, nhanes_accel_df) |>
+  drop_na(sex | age | bmi | education)|>
+  filter(age >= 21)
+```
+
+
 
 
