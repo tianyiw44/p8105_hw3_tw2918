@@ -233,7 +233,7 @@ nhanes_df |>
        title = "Age Distribution for Men and Women in Each Education Category",
         x = "Education category",
         y = "Age",
-         color = "Sex"
+        color = "Sex"
     )
 ```
 
@@ -246,7 +246,30 @@ Comment:
 * The plot shows that, the mean and average age for male and female is similar in `Less than high school` education level, which is around 58 for mean, and 60 for median; female has a higher average and median age than male `high school equivalent` education level, average age is around 58 for female, and 50 for male, median age is around 62 for female and 53 for male; the mean and average age for male and female is similar in `More than high school` education level, which is around 45 for average, and 43 for median. 
 * For `Less than high school` and `high school equivalent` education levels, mean is less than median, suggesting left skewed distribution. `More than high school` edcuation level, mean is greater than median, suggesting right skewed distribution. 
 
+## 3 aggregate across minutes to create a total activity variable for each participant. Plot these total activities (y-axis) against age (x-axis); 
 
+your plot should compare men to women and have separate panels for each education level. Include a trend line or a smooth to illustrate differences. Comment on your plot.
 
+```{r}
+nhanes_df |>
+  mutate(total_activity = rowSums(select(nhanes_df, min1:min1440))) |>
+  select(total_activity, everything())|>
+  ggplot(aes(x = age, y = total_activity, color = sex)) +
+  geom_point() +
+  facet_grid(. ~ education) +
+  geom_smooth(se = FALSE) +
+  labs(
+    title = "Distribution of Total Activity against Age for Men and Women in Each Education Category Locations",
+    x = "Age",
+    y = "Total Activity",
+    color = "Sex"
+  )
+```
 
+Comment:
+
+* Female has a greater total activity than male in `Less than high school`  education category from age 20-40, and lower total activity than male from age 40 to 80. The difference is reducing when at 80 years old, the total activity is almost the same between female and male.  
+* Female has a greater total activity than male in `High School euqivalent` in age greater than 25, and lower total activity than male crom 20 to 25. 
+* Female has a greater total activity than male in `More than high school` education category across all age groups. 
+* Generally speaking, we see a the total activity decreasing when age increases. 
 
