@@ -200,7 +200,7 @@ nhanes_demo_df = read_csv("./data/nhanes_covar.csv", skip = 4) |>
          "3" = "More than high school"
          )
     )|>
-  mutate(education = factor(education, levels = c("Less than high School", "High school equivalent", "More than high school")))
+  mutate(education = factor(education, levels = c("Less than high school", "High school equivalent", "More than high school")))
 
 
 nhanes_accel_df = read.csv("./data/nhanes_accel.csv")|>
@@ -212,6 +212,13 @@ nhanes_df =
   filter(age >= 21)
 ```
 
+## 2. Produce a reader-friendly table for the number of men and women in each education category, and create a visualization of the age distributions for men and women in each education category. Comment on these items.
+
+```{r}
+nhanes_df |>
+  group_by(education)|>
+  count()
+```
 
 
 
