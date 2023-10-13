@@ -273,3 +273,28 @@ Comment:
 * Female has a greater total activity than male in `More than high school` education category across all age groups. 
 * Generally speaking, we see a the total activity decreasing when age increases. 
 
+## 4. Accelerometer data allows the inspection activity over the course of the day. Make a three-panel plot that shows the 24-hour activity time courses for each education level and use color to indicate sex. Describe in words any patterns or conclusions you can make based on this graph; including smooth trends may help identify differences.
+
+```{r}
+nhanes_df |>
+  pivot_longer(
+    min1:min1440,
+    names_to = "time_min",
+    names_prefix = "min",
+    values_to = "min_activity"
+  )|>
+  mutate(time_min = as.numeric(time_min) )|>
+  group_by(seqn)|>
+  ggplot(aes(x=time_min, y=min_activity, color = sex)) +
+  geom_line(alpha = 0.05) +
+  geom_smooth(aes(group = sex)) +
+  facet_grid(.~ education )
+```
+
+Comments:
+
+* The average patterns of activity is similar across all three education levels. The activity decreases from 0 mins to 250 mins (mid-night to early morning) and stays at a low level, and almost reaches 0 at 250 mins. The activity starts to increase at 250 mins from 0 to around 12.5 at 500 mins. It stays constant from 500 mins to 1200 mins (during day time) at around 12.5, and starts to decreases after 1200 mins (during night time).
+
+* The activity data is similar for `Less than high school` and `high school equivalent` education category. For `More than high school` edcuation category, the activity has two peaks at around 500 mins for both male and female and 1500 mins, most ly for female. 
+
+
